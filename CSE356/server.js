@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 var app = express();
 var dateTime = require('node-datetime');
 var fs = require('fs');
-var sleep = require('sleep');
 var notLongEnoughResponses = ['Tell me more', 'Can you please elaborate?', 'Can you explain in further detail?'];
 var elizabot = require('elizabot');
 var	eliza = new elizabot();
