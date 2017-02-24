@@ -1,0 +1,14 @@
+.container{	
+	margin: 0 auto;
+	width: 280px;
+	margin-bottom: 25px;
+}
+
+#heading {
+color: red;
+}
+
+#nameInput {
+	width: 280px;
+}
+

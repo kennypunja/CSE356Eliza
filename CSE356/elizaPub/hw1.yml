@@ -1,0 +1,22 @@
+- hosts: hw1
+  remote_user: root
+  tasks:
+    - name: install git
+      apt: name=git update_cache=yes state=latest 
+
+    - name: cloning hw0
+      git: repo=https://github.com/kennypunja/CSE356Hw0.git dest=/var/hw0 clone=yes update=yes
+
+    - name: installing apache2
+      apt: name=apache2 state=latest
+
+    - name: move cse356 to correct apache folder
+      command: cp /var/hw0/cse356hw0.html /var/www/html
+
+    - name: rename cse356hw0 to hw0.html
+      command: mv /var/www/html/cse356hw0.html /var/www/html/hw0.html
+
+    - name: start apache2
+      service: name=apache2 state=restarted
+
+

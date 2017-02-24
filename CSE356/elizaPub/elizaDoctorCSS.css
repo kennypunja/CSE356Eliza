@@ -1,0 +1,37 @@
+html, body{
+	height:100%;
+}
+
+.container {
+	
+	margin: 0 auto;
+	margin-top: 50px;
+	width: 400px;
+	max-height:400px;
+
+}
+
+.container2{
+	overflow: scroll;
+}
+
+
+#heading {
+	
+	color: blue;
+}
+
+
+#userText {
+
+	margin-top: 20px;
+
+}
+
+.list-group-item{
+
+	height: auto;
+	word-wrap: break-word;
+
+}
+
