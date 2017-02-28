@@ -209,23 +209,24 @@ app.post('/eliza/DOCTOR', function(req,res){
 
 app.listen(9000, "0.0.0.0",function() {
 	//var host = server.address();
+
+
 		MongoClient.connect(url, function(err,db){
 		if (err){
 			return console.dir(err);
 		}
 		console.log("MONGO CLIENT CREATED!!!");
 		db.createCollection('factbook',function(err,collection){
+			if (!err){
 			console.log("FACEBOOK CREATED")
-		});
-		var factbookCol = db.collection('factbook');
-		allDirs = fs.readdirSync(__dirname + '/factbook.json');
-		allDirs.forEach(file => {
+			var factbookCol = db.collection('factbook');
+			allDirs = fs.readdirSync(__dirname + '/factbook.json');
+			allDirs.forEach(file => {
 			if (fs.lstatSync(__dirname + '/factbook.json' + '/' + file).isDirectory()){
 				allFilesInDir = fs.readdirSync(__dirname + '/factbook.json' + '/' + file);
 				allFilesInDir.forEach(smallFile =>{
 					if(smallFile.includes(".json")){
 						var json = JSON.parse(fs.readFileSync(__dirname + '/factbook.json' + '/' + file + '/' + smallFile,'utf8'));
-				
 						var document = {
 							'Introduction': json.Introduction,
 							'Georgraphy': json.Geography,
@@ -237,18 +238,21 @@ app.listen(9000, "0.0.0.0",function() {
 							'Military and Security': json["Military and Security"],
 							'Transnational Issues': json["Transnational Issues"]
 						}
+						
+						
 						factbookCol.insertOne(document);
 					}
 				})
 			}
 		});
-		
 		console.log("CHECKING CONTENTS IN COLLECTION")
-		factbookCol.find().each(function(err,doc){
-			console.log("THIS IS DOC")			
+		/*factbookCol.find().each(function(err,doc){
+			console.log("THIS IS DOC")	
+			console.log(doc);		
+		});*/
+		}
 		});
-		db.close();
-		console.log("CLOSED CONNECTION TO DATABASE");
+
 	});
 	console.log('server listening on port ' + 9000);
 });
