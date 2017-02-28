@@ -1,0 +1,37 @@
+var express = require('express');
+var bodyParser = require('body-parser');
+var MongoClient = require('mongodb');
+var assert = require('assert');
+var url = 'mongodb://130.245.169.83:27017/hw2';
+MongoClient.connect(url,function(err,db){
+	assert.equal(null,err);
+	mainScript(db,function(){
+		db.close();
+	});
+});
+
+var mainScript = function(db,callback){
+	allDirs = fs.readdirSync(__dirname + '/factbook.json');
+	allDirs.forEach(file => {
+	if (fs.lstatSync(__dirname + '/factbook.json' + '/' + file).isDirectory()){
+			allFilesInDir = fs.readdirSync(__dirname + '/factbook.json' + '/' + file);
+			allFilesInDir.forEach(smallFile =>{
+			if(smallFile.includes(".json")){
+				var json = JSON.parse(fs.readFileSync(__dirname + '/factbook.json' + '/' + file + '/' + smallFile,'utf8'));
+				var document = {
+					'Introduction': json.Introduction,
+					'Georgraphy': json.Geography,
+					'People And Society': json["People and Society"],
+					'Government': json["Govenrment"],
+					'Economy': json["Economy"],
+					'Communications': json["Communications"],
+				    'Transportation': json["Transportation"],
+					'Military and Security': json["Military and Security"],
+					'Transnational Issues': json["Transnational Issues"]
+					}						
+						db.collection('factbook').insertOne(document);
+					}
+				})
+			}
+		});
+}
