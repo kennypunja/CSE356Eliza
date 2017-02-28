@@ -7,7 +7,7 @@ var notLongEnoughResponses = ['Tell me more', 'Can you please elaborate?', 'Can 
 var elizabot = require('elizabot');
 var	eliza = new elizabot();
 var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://localhost:27017/hw2';
+var url = 'mongodb://130.245.169.83:27017/hw2';
 
 var userInputCurrentGoodFeelings = ["i'm doing fine", "i'm doing okay", "i'm feeling good", "i'm feeling fine", "i am doing okay", "i am feeling fine", "i'm okay",
 "i am good", 'Doing fine', "it's going good", "it's going fine", "it's going great", "it's going fantastic", "i'm good", "i'm fine", "i'm okay", "i'm great", "im okay", "im great", "im good", "im fantastic"];
@@ -207,7 +207,7 @@ app.post('/eliza/DOCTOR', function(req,res){
 })
 
 
-app.listen(9000, "0.0.0.0",function() {
+app.listen(80, "0.0.0.0",function() {
 	//var host = server.address();
 
 
@@ -254,5 +254,5 @@ app.listen(9000, "0.0.0.0",function() {
 		});
 
 	});
-	console.log('server listening on port ' + 9000);
+	console.log('server listening on port ' + 80);
 });
