@@ -6,8 +6,6 @@ var fs = require('fs');
 var notLongEnoughResponses = ['Tell me more', 'Can you please elaborate?', 'Can you explain in further detail?'];
 var elizabot = require('elizabot');
 var	eliza = new elizabot();
-var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://130.245.169.83:27017/hw2';
 
 var userInputCurrentGoodFeelings = ["i'm doing fine", "i'm doing okay", "i'm feeling good", "i'm feeling fine", "i am doing okay", "i am feeling fine", "i'm okay",
 "i am good", 'Doing fine', "it's going good", "it's going fine", "it's going great", "it's going fantastic", "i'm good", "i'm fine", "i'm okay", "i'm great", "im okay", "im great", "im good", "im fantastic"];
@@ -209,50 +207,5 @@ app.post('/eliza/DOCTOR', function(req,res){
 
 app.listen(80, "0.0.0.0",function() {
 	//var host = server.address();
-
-
-		MongoClient.connect(url, function(err,db){
-		if (err){
-			return console.dir(err);
-		}
-		console.log("MONGO CLIENT CREATED!!!");
-		db.createCollection('factbook',function(err,collection){
-			if (!err){
-			console.log("FACEBOOK CREATED")
-			var factbookCol = db.collection('factbook');
-			allDirs = fs.readdirSync(__dirname + '/factbook.json');
-			allDirs.forEach(file => {
-			if (fs.lstatSync(__dirname + '/factbook.json' + '/' + file).isDirectory()){
-				allFilesInDir = fs.readdirSync(__dirname + '/factbook.json' + '/' + file);
-				allFilesInDir.forEach(smallFile =>{
-					if(smallFile.includes(".json")){
-						var json = JSON.parse(fs.readFileSync(__dirname + '/factbook.json' + '/' + file + '/' + smallFile,'utf8'));
-						var document = {
-							'Introduction': json.Introduction,
-							'Georgraphy': json.Geography,
-							'People And Society': json["People and Society"],
-							'Government': json["Govenrment"],
-							'Economy': json["Economy"],
-							'Communications': json["Communications"],
-							'Transportation': json["Transportation"],
-							'Military and Security': json["Military and Security"],
-							'Transnational Issues': json["Transnational Issues"]
-						}
-						
-						
-						factbookCol.insertOne(document);
-					}
-				})
-			}
-		});
-		console.log("CHECKING CONTENTS IN COLLECTION")
-		/*factbookCol.find().each(function(err,doc){
-			console.log("THIS IS DOC")	
-			console.log(doc);		
-		});*/
-		}
-		});
-
-	});
 	console.log('server listening on port ' + 80);
 });
