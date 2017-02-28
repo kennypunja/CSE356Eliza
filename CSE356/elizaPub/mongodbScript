@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb');
+var fs = require('fs');
+var app = express();
 var assert = require('assert');
 var url = 'mongodb://localhost:27017/hw2';
 MongoClient.connect(url,function(err,db){
@@ -12,7 +14,7 @@ MongoClient.connect(url,function(err,db){
 
 var mainScript = function(db,callback){
 	allDirs = fs.readdirSync(__dirname + '/factbook.json');
-	allDirs.forEach(file => {
+	allDirs.forEach(file = {
 	if (fs.lstatSync(__dirname + '/factbook.json' + '/' + file).isDirectory()){
 			allFilesInDir = fs.readdirSync(__dirname + '/factbook.json' + '/' + file);
 			allFilesInDir.forEach(smallFile =>{
