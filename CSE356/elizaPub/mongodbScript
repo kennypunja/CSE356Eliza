@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb');
 var assert = require('assert');
-var url = 'mongodb://130.245.169.83:27017/hw2';
+var url = 'mongodb://localhost:27017/hw2';
 MongoClient.connect(url,function(err,db){
 	assert.equal(null,err);
 	mainScript(db,function(){
