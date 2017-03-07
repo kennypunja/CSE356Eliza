@@ -196,28 +196,28 @@ app.post('/listen',function(req,res){
 				req.body.keys.forEach(function(key){
 				ch.bindQueue(q.queue,'hw3',key)
 			})
+
 			console.log("[*] Waiting for message in %s To exit press CTRL+C");
 			ch.consume(q.queue,function(msg){
+				if(err){
+					res.send("fail");
+				}
+				
 				console.log(" [x] Received %s", msg.content.toString());
 				var jsonObj = {
 				     msg: msg.content.toString()
 				}
-				res.send(jsonObj);
-			}, {
-				noAck: true
-			});
+				console.log("SENT" + jsonObj);
+				res.write(JSON.stringify(jsonObj));}, {
+				noAck: true});
 
 			});
-
-			//ch.bindQueue(q,'hw3','key');
-
-
 		})
 	})
 })
 
 
-app.listen(80, "0.0.0.0",function() {
+app.listen(9000, "0.0.0.0",function() {
 	//var host = server.address();
 	console.log('server listening on port ' + 80);
 });
