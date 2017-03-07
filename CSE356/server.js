@@ -5,6 +5,7 @@ var dateTime = require('node-datetime');
 var fs = require('fs');
 var notLongEnoughResponses = ['Tell me more', 'Can you please elaborate?', 'Can you explain in further detail?'];
 var elizabot = require('elizabot');
+var amqp = require('amqplib/callback_api');
 var	eliza = new elizabot();
 
 var userInputCurrentGoodFeelings = ["i'm doing fine", "i'm doing okay", "i'm feeling good", "i'm feeling fine", "i am doing okay", "i am feeling fine", "i'm okay",
@@ -31,6 +32,7 @@ containsSubstring = function(userInp, possibleMatches){
 }*/
 
 //getMatchRegex = function(regExp, )
+
 
 
 
@@ -136,53 +138,6 @@ app.post('/eliza',function(req,res){
 
 app.post('/eliza/DOCTOR', function(req,res){
 	console.log("USER TEXT WAS INPUTTED");
-	//chatArray.push(req.body);
-	//sleep.sleep(3);
-
-	//var answer = computerRegex.test(req.body.message);
-
-	/*
-	var answer = possibleChoices[1][0].test(req.body.message);
-	var responseMessage = getRandomResponse(possibleChoices[1][1]);
-	var response = {
-		user: 'Eliza',
-		message: responseMessage,
-		eliza: responseMessage
-	}
-	res.send(response);
-	*/
-
-	
-	/*if (userInputLongEnough(req.body.message) == true){
-		console.log("USER INPUT LONG ENOUGH!")
-		console.log(req.body.message);
-		if(containsSubstring(req.body.message,userInputCurrentGoodFeelings) != false){
-			var arrayOfWords = containsSubstring(req.body.message,userInputCurrentGoodFeelings).split(" ");
-			var lastWord = arrayOfWords[arrayOfWords.length-1];
-			console.log(lastWord);
-			var elizaMessage =  getRandomResponse(elizaGladResponses) + ' ' + lastWord + '. ' + getRandomResponse(elizaTalkAboutQuestions);
-			var response = {
-				user:'Eliza',
-				message: elizaMessage,
-				eliza: 'Eliza
-			}
-			res.send(response);
-		}
-		else if{
-
-		}
-		else{
-			res.send(sendBackDefaultMessage())
-		}
-	}
-	else{
-		var response = {
-			user: 'Eliza',
-			message: notLongEnoughResponses[Math.floor(Math.random()*notLongEnoughResponses.length)],
-			eliza: 'Eliza
-		}
-		res.send(response);
-	}*/
 
 	
 	if (eliza.quit){
@@ -204,8 +159,62 @@ app.post('/eliza/DOCTOR', function(req,res){
 
 })
 
+app.post('/speak',function(req,res){
+	console.log("OK SPEAK")
+	
+	amqp.connect('amqp://localhost',function(err,conn){
+		conn.createChannel(function(err,ch){
+			var q = 'queue';
 
-app.listen(80, "0.0.0.0",function() {
+			ch.assertExchange('hw3','direct',{
+				durable:false
+			});
+
+			ch.publish('hw3',req.body.key,new Buffer(req.body.msg))
+			//ch.sendToQueue(q,new Buffer(msg));
+			console.log(" [x] Sent %s", req.body.msg);
+		})
+		setTimeout(function(){
+			conn.close();
+		},500);
+	})
+})
+
+app.post('/listen',function(req,res){
+	console.log("OK LISTEN")
+	console.log(req.body.keys);
+	amqp.connect('amqp://localhost',function(err,conn){
+		conn.createChannel(function(err,ch){
+			ch.assertExchange('hw3', 'direct',{
+				durable: false
+			});
+
+			var q = 'queue';
+			ch.assertQueue('',{
+				exclusive: true
+			},function(err,q){
+
+				req.body.keys.forEach(function(key){
+				ch.bindQueue(q.queue,'hw3',key)
+			})
+			console.log("[*] Waiting for message in %s To exit press CTRL+C");
+			ch.consume(q.queue,function(msg){
+				console.log(" [x] Received %s", msg.content.toString());
+			}, {
+				noAck: true
+			});
+
+			});
+
+			//ch.bindQueue(q,'hw3','key');
+
+
+		})
+	})
+})
+
+
+app.listen(9000, "0.0.0.0",function() {
 	//var host = server.address();
-	console.log('server listening on port ' + 80);
+	console.log('server listening on port ' + 9000);
 });
