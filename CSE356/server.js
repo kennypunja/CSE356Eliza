@@ -162,7 +162,7 @@ app.post('/eliza/DOCTOR', function(req,res){
 app.post('/speak',function(req,res){
 	console.log("OK SPEAK")
 	
-	amqp.connect('amqp://localhost',function(err,conn){
+	amqp.connect('amqp://http://kpunjarojana.cse356.compas.cs.stonybrook.edu',function(err,conn){
 		conn.createChannel(function(err,ch){
 			var q = 'queue';
 
@@ -181,9 +181,7 @@ app.post('/speak',function(req,res){
 })
 
 app.post('/listen',function(req,res){
-	console.log("OK LISTEN")
-	console.log(req.body.keys);
-	amqp.connect('amqp://localhost',function(err,conn){
+	amqp.connect('amqp://http://kpunjarojana.cse356.compas.cs.stonybrook.edu',function(err,conn){
 		conn.createChannel(function(err,ch){
 			ch.assertExchange('hw3', 'direct',{
 				durable: false
@@ -193,7 +191,6 @@ app.post('/listen',function(req,res){
 			ch.assertQueue('',{
 				exclusive: true
 			},function(err,q){
-
 				req.body.keys.forEach(function(key){
 				ch.bindQueue(q.queue,'hw3',key)
 			})
