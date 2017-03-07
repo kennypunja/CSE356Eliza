@@ -162,7 +162,7 @@ app.post('/eliza/DOCTOR', function(req,res){
 app.post('/speak',function(req,res){
 	console.log("OK SPEAK")
 	
-	amqp.connect('amqp://http://kpunjarojana.cse356.compas.cs.stonybrook.edu',function(err,conn){
+	amqp.connect('amqp://localhost',function(err,conn){
 		conn.createChannel(function(err,ch){
 			var q = 'queue';
 
@@ -181,7 +181,10 @@ app.post('/speak',function(req,res){
 })
 
 app.post('/listen',function(req,res){
-	amqp.connect('amqp://http://kpunjarojana.cse356.compas.cs.stonybrook.edu',function(err,conn){
+	amqp.connect('amqp://localhost',function(err,conn){
+		if (err){
+		console.log(err);
+		}
 		conn.createChannel(function(err,ch){
 			ch.assertExchange('hw3', 'direct',{
 				durable: false
@@ -197,6 +200,10 @@ app.post('/listen',function(req,res){
 			console.log("[*] Waiting for message in %s To exit press CTRL+C");
 			ch.consume(q.queue,function(msg){
 				console.log(" [x] Received %s", msg.content.toString());
+				var jsonObj = {
+				     msg = msg.content.toString()
+				}
+				res.send(jsonObj);
 			}, {
 				noAck: true
 			});
@@ -211,7 +218,7 @@ app.post('/listen',function(req,res){
 })
 
 
-app.listen(9000, "0.0.0.0",function() {
+app.listen(80, "0.0.0.0",function() {
 	//var host = server.address();
-	console.log('server listening on port ' + 9000);
+	console.log('server listening on port ' + 80);
 });
