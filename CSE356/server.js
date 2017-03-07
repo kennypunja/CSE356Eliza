@@ -207,7 +207,9 @@ app.post('/listen',function(req,res){
 				}
 				if (boolean == 0){
 					console.log("SENT " + msg.content.toString());
-					res.send(msg.content.toString());
+					return res.status('200').json({
+						msg: msg.content.toString()
+					});
 					boolean = 1;	
 				}
 				else{
@@ -236,7 +238,7 @@ app.post('/list',function(req,res){
 
 
 
-app.listen(80, "0.0.0.0",function() {
+app.listen(9000, "0.0.0.0",function() {
 	//var host = server.address();
 	console.log('server listening on port ' + 80);
 });
