@@ -200,10 +200,10 @@ app.post('/listen',function(req,res){
 			console.log("[*] Waiting for message in %s To exit press CTRL+C");
 			ch.consume(q.queue,function(msg){
 				console.log(" [x] Received %s", msg.content.toString());
-				var message = msg.content.toString();
+				var message = msg
 				console.log(message);
 				var jsonObj = {
-				     msg = msg.content.toString()
+				     msg = msg
 				}
 				res.send(jsonObj);
 			}, {
