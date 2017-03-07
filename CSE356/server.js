@@ -205,10 +205,13 @@ app.post('/listen',function(req,res){
 				var jsonObj = {
 				     msg: msg.content.toString()
 				}
-				console.log("SENT " + msg.content.toString());
 				if (boolean == 0){
+					console.log("SENT " + msg.content.toString());
 					res.send(msg.content.toString());
 					boolean = 1;	
+				}
+				else{
+					console.log("OK BOOLEAN IS OVER");
 				}
 				}, {
 				noAck: true});
