@@ -203,7 +203,7 @@ app.post('/listen',function(req,res){
 				var message = msg
 				console.log(message);
 				var jsonObj = {
-				     msg = msg
+				     msg = message
 				}
 				res.send(jsonObj);
 			}, {
