@@ -207,10 +207,10 @@ app.post('/listen',function(req,res){
 				}
 				if (boolean == 0){
 					console.log("SENT " + msg.content.toString());
+					boolean = 1;	
 					return res.status('200').json({
 						msg: msg.content.toString()
 					});
-					boolean = 1;	
 				}
 				else{
 					console.log("OK BOOLEAN IS OVER");
