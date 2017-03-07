@@ -182,6 +182,7 @@ app.post('/speak',function(req,res){
 
 app.post('/listen',function(req,res){
 	amqp.connect('amqp://localhost',function(err,conn){
+		var boolean = 0;
 		if (err){
 		console.log(err);
 		}
@@ -199,22 +200,37 @@ app.post('/listen',function(req,res){
 
 			console.log("[*] Waiting for message in %s To exit press CTRL+C");
 			ch.consume(q.queue,function(msg){
-				if(err){
-					res.send("fail");
-				}
-				
+
 				console.log(" [x] Received ", msg.content.toString());
 				var jsonObj = {
 				     msg: msg.content.toString()
 				}
-				console.log("SENT" + msg.content.toString());
-				res.write(JSON.stringify(jsonObj));}, {
+				console.log("SENT " + msg.content.toString());
+				if (boolean == 0){
+					res.send(msg.content.toString());
+					boolean = 1;	
+				}
+				}, {
 				noAck: true});
 
 			});
 		})
 	})
 })
+
+app.post('/list',function(req,res){
+	var connection = amqp.createConnection({
+		host: 'amqp://localhost'
+	})
+
+	connection.on('error',function(e){
+		console.log("Error from amqp: ", e);
+	})
+
+	connection.on
+})
+
+
 
 
 app.listen(80, "0.0.0.0",function() {
