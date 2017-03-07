@@ -190,7 +190,6 @@ app.post('/listen',function(req,res){
 				durable: false
 			});
 
-			var q = 'queue';
 			ch.assertQueue('',{
 				exclusive: true
 			},function(err,q){
@@ -200,7 +199,6 @@ app.post('/listen',function(req,res){
 			console.log("[*] Waiting for message in %s To exit press CTRL+C");
 			ch.consume(q.queue,function(msg){
 				console.log(" [x] Received %s", msg.content.toString());
-			
 				var jsonObj = {
 				     msg: msg.content.toString()
 				}
