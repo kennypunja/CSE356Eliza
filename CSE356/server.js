@@ -202,7 +202,7 @@ app.post('/listen',function(req,res){
 				console.log(" [x] Received %s", msg.content.toString());
 			
 				var jsonObj = {
-				     msg: msg.content.toString();
+				     msg: msg.content.toString()
 				}
 				res.send(jsonObj);
 			}, {
