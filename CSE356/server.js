@@ -203,11 +203,11 @@ app.post('/listen',function(req,res){
 					res.send("fail");
 				}
 				
-				console.log(" [x] Received %s", msg.content.toString());
+				console.log(" [x] Received ", msg.content.toString());
 				var jsonObj = {
 				     msg: msg.content.toString()
 				}
-				console.log("SENT" + jsonObj);
+				console.log("SENT" + msg.content.toString());
 				res.write(JSON.stringify(jsonObj));}, {
 				noAck: true});
 
