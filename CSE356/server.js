@@ -171,12 +171,13 @@ app.post('/speak',function(req,res){
 			});
 
 			ch.publish('hw3',req.body.key,new Buffer(req.body.msg))
+			res.send('');
 			//ch.sendToQueue(q,new Buffer(msg));
 			console.log(" [x] Sent %s", req.body.msg);
 		})
 		setTimeout(function(){
 			conn.close();
-		},100);
+		},500);
 	})
 })
 /*
