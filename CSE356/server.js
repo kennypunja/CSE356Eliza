@@ -226,9 +226,10 @@ app.post('/listen',function(req,res){
 				}
 					console.log("SENT " + msg.content.toString());
 					boolean = 1;	
-					return res.status('200').json({
+					res.send(jsonObj);
+					/*return res.status('200').json({
 						msg: msg.content.toString()
-					});
+					});*/
 				}, {
 				noAck: true});
 
