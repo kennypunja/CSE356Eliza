@@ -179,6 +179,25 @@ app.post('/speak',function(req,res){
 		},500);
 	})
 })
+/*
+function doSomething(msg,callback){
+	console.log("[x] Received ", msg.content.toString());
+	if (callback(boolean) == 0){
+		console.log("SENT " + msg.content.toString());
+		boolean == 1;
+		return res.status('200').json({
+			msg: msg.content.toString()
+		});
+	}
+	else{
+
+	}
+
+}
+
+function checkBoolean(boolean){
+	if (boolean == 0)
+}*/
 
 app.post('/listen',function(req,res){
 	amqp.connect('amqp://localhost',function(err,conn){
@@ -205,16 +224,11 @@ app.post('/listen',function(req,res){
 				var jsonObj = {
 				     msg: msg.content.toString()
 				}
-				if (boolean == 0){
 					console.log("SENT " + msg.content.toString());
 					boolean = 1;	
 					return res.status('200').json({
 						msg: msg.content.toString()
 					});
-				}
-				else{
-					console.log("OK BOOLEAN IS OVER");
-				}
 				}, {
 				noAck: true});
 
