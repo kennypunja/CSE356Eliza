@@ -174,9 +174,9 @@ app.post('/speak',function(req,res){
 			//ch.sendToQueue(q,new Buffer(msg));
 			console.log(" [x] Sent %s", req.body.msg);
 		})
-		/*setTimeout(function(){
+		setTimeout(function(){
 			conn.close();
-		},0);*/
+		},100);
 	})
 })
 /*
