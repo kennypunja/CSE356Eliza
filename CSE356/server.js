@@ -225,9 +225,14 @@ app.post('/listen',function(req,res){
 				var jsonObj = {
 				     msg: msg.content.toString()
 				}
+				if (boolean == 0){
 					console.log("SENT " + msg.content.toString());
 					boolean = 1;	
 					res.send(jsonObj);
+				}
+				else{
+					console.log("NOT SENT B/C BOOL CHANGED");
+				}
 					/*return res.status('200').json({
 						msg: msg.content.toString()
 					});*/
