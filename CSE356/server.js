@@ -298,6 +298,7 @@ app.post('/deposit',function(req,res){
 		}
 		else{
 		console.log("DATA WAS DEPOSITED");
+		res.send('');
 		}	
 	})
 })
