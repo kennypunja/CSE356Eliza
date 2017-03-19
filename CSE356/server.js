@@ -6,6 +6,12 @@ var fs = require('fs');
 var notLongEnoughResponses = ['Tell me more', 'Can you please elaborate?', 'Can you explain in further detail?'];
 var elizabot = require('elizabot');
 var amqp = require('amqplib/callback_api');
+var cassandra = require('cassandra-driver');
+var fileUpload = require('express-fileupload');
+
+var cassClient = new cassandra.Client({ contactPoints: ['127.0.0.1'],
+	keyspace: 'hw4'
+});
 var	eliza = new elizabot();
 
 var userInputCurrentGoodFeelings = ["i'm doing fine", "i'm doing okay", "i'm feeling good", "i'm feeling fine", "i am doing okay", "i am feeling fine", "i'm okay",
@@ -35,7 +41,23 @@ containsSubstring = function(userInp, possibleMatches){
 
 
 
-
+function RemoveEmptyFields(inputJSON){
+	var obj = JSON.parse(inputJSON);
+	var newJson = {};
+	for (var field in obj){
+		if(obj[field] != null && obj[field] != [] && obj[field] != {} && String(obj[field]).replace(/ /g,'').length > 0){
+			if(typeof(obj[field]) == 'object'){
+				if (Object.keys(RemoveEmptyFields(JSON.stringify(obj[field]))).length > 0){
+				newJson[field] = RemoveEmptyFields(JSON.stringify(obj[field]))
+				}
+			}
+			else{
+				newJson[field] = obj[field];
+			}
+		}
+	}
+	return newJson;
+}
 
 
 getRandomResponse = function(array){
@@ -69,6 +91,7 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
+app.use(fileUpload())
 
 app.use('/',express.static(__dirname + '/elizaPub',{
 
@@ -256,10 +279,59 @@ app.post('/list',function(req,res){
 	connection.on
 })
 
+app.post('/deposit',function(req,res){
+	if (!req.files){
+    	return res.status(400).send('No files were uploaded.');
+	}
+	console.log("DEPOSIT");
+	console.log(req.files.contents.data);
+	console.log(req.body.filename);
+
+	var query = "INSERT INTO imgs (filename, contents, lastInserted) VALUES (?, ?, now());";
+	//var query = "INSERT INTO imgs (filename, contents) VALUES ('cfd66ccc-d857-4e90-b1e5-df98a3d40cd6', 'johndoe');";
+	//var query = "INSERT INTO imgs (filename) VALUES ('jackie');";
+
+	cassClient.execute(query,[req.body.filename, req.files.contents.data],function(err,result){
+		if(err){
+			console.log(err);
+			res.send(err);
+		}
+		else{
+		console.log("DATA WAS DEPOSITED");
+		}	
+	})
+})
+
+app.get('/retrieve',function(req,res){
+	var query = "SELECT * FROM imgs LIMIT 1;";
+	cassClient.execute(query,function(err,result){
+		if (err){
+			console.log(err);
+		}
+		else{
+			console.log("GOT SOMETHING BACK");
+			console.log(result.rows[0].contents);
+			res.send(result.rows[0].contents)
+		}
+	})
+
+})
+
+app.post('/test',function(req,res){
+	var query = '{"first_name": "Jane","last_name": "Smith","email": "jane.smith@wyng.com","gender": null,"invitations": [{"from": "","code": null}],"company": {"name": "","industries": []},"address": {"city": "New York","state": "NY","zip": "10011","street": "   "}}'
+	//var query = '{"invitations": [{"from": "","code": null}]}';
+	//var query = '{"address": {"city": "New York","state": "NY","zip": "10011","street": "    "}}'
+	//var query = '{"first_name": "Jane","last_name": "Smith","email": "jane.smith@wyng.com","gender": null, "company": {"name": "","industries": []},"address": {"city": "New York","state": "NY","zip": "10011","street": "   "}}'
+
+	console.log(RemoveEmptyFields(query));
+})
+
+//app.get('/retrieve')
 
 
 
-app.listen(80, "0.0.0.0",function() {
+
+app.listen(9000, "0.0.0.0",function() {
 	//var host = server.address();
 	console.log('server listening on port ' + 80);
 });

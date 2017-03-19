@@ -20,7 +20,7 @@ var mainScript = function(db,callback){
 			allFilesInDir.forEach(smallFile =>{
 			if(smallFile.includes(".json")){
 				var json = JSON.parse(fs.readFileSync(__dirname + '/factbook.json' + '/' + file + '/' + smallFile,'utf8'));
-				var document = {
+				/*var document = {
 					'Introduction': json.Introduction,
 					'Georgraphy': json.Geography,
 					'People And Society': json["People and Society"],
@@ -30,8 +30,8 @@ var mainScript = function(db,callback){
 				    'Transportation': json["Transportation"],
 					'Military and Security': json["Military and Security"],
 					'Transnational Issues': json["Transnational Issues"]
-					}						
-						db.collection('factbook').insertOne(document);
+					}	*/					
+						db.collection('factbook').insertOne(json);
 					}
 				})
 			}

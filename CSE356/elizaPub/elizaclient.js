@@ -57,7 +57,7 @@ app.controller('ElizaController',function($scope,$location,$http){
 		success(function(res){
 			$scope.noName = false;
 			$scope.haveName = true;
-			$
+			
 			console.log("This is res" + res.name);
 			$scope.userName = res.name;
 			$scope.date = res.date;
