@@ -338,7 +338,7 @@ app.post('/test',function(req,res){
 
 
 
-app.listen(9000, "0.0.0.0",function() {
+app.listen(80, "0.0.0.0",function() {
 	//var host = server.address();
 	console.log('server listening on port ' + 80);
 });
