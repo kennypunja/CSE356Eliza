@@ -322,7 +322,7 @@ app.get('/retrieve',function(req,res){
 				filename: imageType[0],
 				contents: result.rows[0].contents
 			}*/
-			res.setHeader("Content-Transfer-Encoding", "Binary");
+			res.setEncoding("Binary");
 			res.send(result.rows[0].contents)
 
 		}
