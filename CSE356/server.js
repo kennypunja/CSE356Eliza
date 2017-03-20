@@ -311,7 +311,7 @@ app.get('/retrieve',function(req,res){
 		}
 		else{
 			console.log("GOT SOMETHING BACK");
-			console.log(req.body.filename);
+			console.log(result.rows[0].filename)
 			console.log(result.rows[0].contents);
 			//res.writeHead(200,{'Content-Type' : 'image'});
 			res.setHeader("Content-Type","image");
