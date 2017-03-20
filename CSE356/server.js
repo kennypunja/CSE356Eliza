@@ -283,9 +283,7 @@ app.post('/deposit',function(req,res){
 	if (!req.files){
     	return res.status(400).send('No files were uploaded.');
 	}
-	console.log("DEPOSIT");
-	console.log(req.files.contents.data);
-	console.log(req.body.filename);
+
 
 	var query = "INSERT INTO imgs (filename, contents, lastInserted) VALUES (?, ?, now());";
 	//var query = "INSERT INTO imgs (filename, contents) VALUES ('cfd66ccc-d857-4e90-b1e5-df98a3d40cd6', 'johndoe');";
@@ -298,6 +296,8 @@ app.post('/deposit',function(req,res){
 		}
 		else{
 		console.log("DATA WAS DEPOSITED");
+		console.log(req.body.filename);
+		console.log(req.files.contents.data);
 		res.send('');
 		}	
 	})
@@ -311,6 +311,7 @@ app.get('/retrieve',function(req,res){
 		}
 		else{
 			console.log("GOT SOMETHING BACK");
+			console.log(req.body.filename);
 			console.log(result.rows[0].contents);
 			//res.writeHead(200,{'Content-Type' : 'image'});
 			res.setHeader("Content-Type","image");
