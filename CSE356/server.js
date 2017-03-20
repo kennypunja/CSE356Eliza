@@ -320,7 +320,7 @@ app.get('/retrieve',function(req,res){
 			res.setHeader("Content-Type","image/" + imageType);
 			var ok = {
 				filename: imageType[0],
-				contents: result.rows[0].contents;
+				contents: result.rows[0].contents
 			}
 			res.send(ok)
 		}
