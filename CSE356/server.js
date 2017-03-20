@@ -315,7 +315,7 @@ app.get('/retrieve',function(req,res){
 			console.log(result.rows[0].filename)
 			console.log(result.rows[0].contents);
 			var imageType = String(result.rows[0].filename).split(".");
-			connsole.log("THIS IMAGE TYPe" + imageType);
+			console.log("THIS IMAGE TYPe" + imageType);
 			//res.writeHead(200,{'Content-Type' : 'image'});
 			res.setHeader("Content-Type","image/" + imageType);
 			res.send(result.rows[0].contents)
