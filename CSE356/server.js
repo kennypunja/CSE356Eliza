@@ -317,7 +317,7 @@ app.get('/retrieve',function(req,res){
 			var imageType = (String(result.rows[0].filename).split("."))[1];
 			console.log("THIS IMAGE TYPe" + imageType);
 			//res.writeHead(200,{'Content-Type' : 'image'});
-			res.setEncoding("Binary");
+			//res.setEncoding("Binary");
 
 			res.setHeader("Content-Type","image/" + imageType + ";" + "charset=binary");
 			/*var ok = {
