@@ -298,7 +298,8 @@ app.post('/deposit',function(req,res){
 		console.log("DATA WAS DEPOSITED");
 		console.log(req.body.filename);
 		console.log(req.files.contents.data);
-		console.log((String)req.files.contents.data.length);
+		console.log("SIZE")
+		console.log((String(req.files.contents.data).length);
 		res.send('');
 		}	
 	})
@@ -326,6 +327,8 @@ app.get('/retrieve',function(req,res){
 				filename: imageType[0],
 				contents: result.rows[0].contents
 			}*/
+			console.log("SIZE")
+			console.log((String(result.rows[0].contents)).length);
 			res.send(result.rows[0].contents)
 
 		}
