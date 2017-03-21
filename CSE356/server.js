@@ -309,8 +309,10 @@ app.post('/deposit',function(req,res){
 app.get('/retrieve',function(req,res){
 	console.log("THIS IS REQ")
 	console.log(req.query);
-	var query = "SELECT * FROM imgs LIMIT 1;";
-	cassClient.execute(query,function(err,result){
+
+	console.log(req.query.filename);
+	var query = "SELECT * FROM imgs WHERE filename key = ? LIMIT 1;";
+	cassClient.execute(query,[req.query.filename]function(err,result){
 		if (err){
 			console.log(err);
 		}
