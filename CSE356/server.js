@@ -319,7 +319,8 @@ app.get('/retrieve',function(req,res){
 			//res.writeHead(200,{'Content-Type' : 'image'});
 			//res.setEncoding("Binary");
 
-			res.setHeader("Content-Type","image/" + imageType + ";" + "charset=binary");
+			//res.setHeader("Content-Type","image/" + imageType + ";" + "charset=binary");
+			res.setHeader("Content-Type", "image;" + "charset=binary");
 			/*var ok = {
 				filename: imageType[0],
 				contents: result.rows[0].contents
