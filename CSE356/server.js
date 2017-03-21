@@ -300,6 +300,7 @@ app.post('/deposit',function(req,res){
 		console.log(req.files.contents.data);
 		console.log("SIZE")
 		console.log((String(req.files.contents.data).length));
+		console.log("---=-=-=-=-=-=-=-=-=-=-=-=----")
 		res.send('');
 		}	
 	})
@@ -329,6 +330,8 @@ app.get('/retrieve',function(req,res){
 			}*/
 			console.log("SIZE")
 			console.log((String(result.rows[0].contents)).length);
+		    console.log("---=-=-=-=-=-=-=-=-=-=-=-=----")
+
 			res.send(result.rows[0].contents)
 
 		}
