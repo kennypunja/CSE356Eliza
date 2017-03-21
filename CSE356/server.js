@@ -312,7 +312,7 @@ app.get('/retrieve',function(req,res){
 
 	console.log(req.query.filename);
 	var query = "SELECT * FROM imgs WHERE filename key = ? LIMIT 1;";
-	cassClient.execute(query,[req.query.filename]function(err,result){
+	cassClient.execute(query,[req.query.filename],function(err,result){
 		if (err){
 			console.log(err);
 		}
