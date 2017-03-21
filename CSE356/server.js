@@ -299,7 +299,7 @@ app.post('/deposit',function(req,res){
 		console.log(req.body.filename);
 		console.log(req.files.contents.data);
 		console.log("SIZE")
-		console.log((String(req.files.contents.data).length);
+		console.log((String(req.files.contents.data).length));
 		res.send('');
 		}	
 	})
